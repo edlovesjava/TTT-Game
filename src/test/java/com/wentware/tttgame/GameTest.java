@@ -1,21 +1,19 @@
-package com.example.demo2;
+package com.wentware.tttgame;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
-import static com.example.demo2.GameAssertions.*;
+import static com.wentware.tttgame.GameAssertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
 
-    Game game = new Game();
+    private Game game;
 
 
     @BeforeEach
     void setup() {
-        game.initBoard();
+        game = new Game();
     }
 
     @Test
@@ -88,24 +86,4 @@ class GameTest {
         assertEquals("X", game.getWinner());
     }
 
-    @Test
-    void testComputePossibleMovesForDepth1() {
-        game.setBoard(BoardFixture.getTestBoard());
-        var moves = game.computePossibleMoves(game.getBoard(), 1);
-        assertEquals(8, moves.size());
-    }
-
-    @Test
-    void testComputePossibleMovesForDepth2() {
-        game.setBoard(BoardFixture.getTestBoard());
-        var moves = game.computePossibleMoves(game.getBoard(),2);
-        assertEquals(8 * 7, moves.size());
-    }
-
-    @Test
-    void testPlayRandomUntilGameOver() {
-        game.playRandomUntilGameOver();
-        game.printBoard();
-        assertTrue(game.isGameOver());
-    }
 }

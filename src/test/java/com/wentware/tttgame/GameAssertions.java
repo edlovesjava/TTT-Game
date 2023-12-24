@@ -1,6 +1,4 @@
-package com.example.demo2;
-
-import com.example.demo2.Game;
+package com.wentware.tttgame;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
