@@ -108,7 +108,7 @@ public class Game {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < getBoardSize(); i++) {
             for (int j = 0; j < getBoardSize(); j++) {
-                sb.append(" ").append(drawCell(i, j)).append(" ");
+                sb.append(" ").append((board[i][j].isEmpty() ? "." : board[i][j].getValue())).append(" ");
                 if (j < getBoardSize() - 1) {
                     sb.append("|");
                 }
@@ -120,8 +120,90 @@ public class Game {
         return sb.toString();
     }
 
-    private String drawCell(int i, int j) {
-        return (board[i][j].isEmpty() ? "." : board[i][j].getValue());
+    public int evaluate(String player) {
+        int isMaximizer = player.equals("X") ? 1 : -1;
+        if (hasWinner(player)) {
+            return 10 * isMaximizer;
+        }
+        if (hasTwoInARow(player)) {
+            return 5 * isMaximizer;
+        }
+        if (hasTwoInAColumn(player)) {
+            return 5 * isMaximizer;
+        }
+        if(hasTwoInADiagonal(player)) {
+            return 5 * isMaximizer;
+        }
+        return 0;
+    }
+
+    private boolean hasTwoInARow(String player) {
+        //find a row with 2 X's or 2 O's and an empty cell
+        return find2MatchingAndSpace(player, false);
+    }
+
+    private boolean find2MatchingAndSpace(String player, boolean rotation) {
+        for (int i = 0; i < getBoardSize(); i++) {
+            for(int s = 0; s < getBoardSize(); s++) { //s is the space
+                int found = 0;
+                for(int j = 0; j < getBoardSize(); j++) {
+                    String testValue = j == s ? " " : player;
+                    //not a match
+                    int row = i;
+                    int col = j;
+                    if (rotation) {
+                        row = j; col = i;
+                    }
+                    if (!board[row][col].getValue().equals(testValue)) {
+                        break; //not a match
+                    }
+                    found++;
+                }
+                if (found == 3) { //found matched
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean hasTwoInAColumn(String player) {
+        //find a col with 2 X's or 2 O's and an empty cell
+        return find2MatchingAndSpace(player, true);
+    }
+
+    private boolean hasTwoInADiagonal(String player) {
+        //find a diagonal with 2 X's or 2 O's and an empty cell
+        //diagonal from top left to bottom right
+        for (int s = 0; s < getBoardSize(); s++) { //s is the space
+            int found = 0;
+            for (int i = 0; i < getBoardSize(); i++) {
+                String testValue = i == s ? " " : player;
+                if (!board[i][i].getValue().equals(testValue)) {
+                    break; //not a match
+                }
+                found++;
+            }
+            if (found == 3) { //found matched
+                return true;
+            }
+        }
+
+        //diagonal from top right to bottom left
+        for (int s = 0; s < getBoardSize(); s++) { //s is the space
+            int found = 0;
+            for (int i = 0; i < getBoardSize(); i++) {
+                String testValue = i == s ? " " : player;
+                if (!board[i][getBoardSize() - 1 - i].getValue().equals(testValue)) {
+                    break; //not a match
+                }
+                found++;
+            }
+            if (found == 3) { //found matched
+                return true;
+            }
+        }
+        return false;
     }
 
 

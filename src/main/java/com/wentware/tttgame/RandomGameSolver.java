@@ -1,13 +1,8 @@
 package com.wentware.tttgame;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Objects;
 import java.util.Random;
 
 public class RandomGameSolver extends GameSolver {
-    private final Logger logger = LoggerFactory.getLogger(RandomGameSolver.class);
 
     private final Random random = new Random();
 
@@ -35,12 +30,6 @@ public class RandomGameSolver extends GameSolver {
             }
         }
 
-    }
-
-    private void printResult() {
-        if (getGame().isGameOver()) {
-            logger.info("Game is over {}", (Objects.equals(getGame().getWinner(), " ") ? " - tie" : " - " + getGame().getWinner() + " wins"));
-        }
     }
 
     public void playRandomUntilGameOver() {

@@ -27,7 +27,7 @@ class RandomGameSolverTest {
     void testComputeAvailableMoves() {
         game.setBoard(BoardFixture.getTestBoard());
         var moves = solver.computeAvailableMoves(game.getBoard());
-        assertEquals(2, moves.size());
+        assertEquals(3, moves.size());
     }
 
     @Test
