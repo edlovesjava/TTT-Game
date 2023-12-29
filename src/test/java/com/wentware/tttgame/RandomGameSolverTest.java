@@ -6,42 +6,31 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RandomGameSolverTest {
-
-    Game game;
-
     RandomGameSolver solver;
 
     @BeforeEach
     void setup() {
-        game = new Game();
-        game.setBoard(BoardFixture.getTestBoard());
-        solver = new RandomGameSolver(game);
+        Game.Cell[][] testBoard = BoardFixture.getTestBoard();
+        solver = new RandomGameSolver(testBoard);
     }
 
     @Test
     void solve() {
         solver.solve();
-        assertTrue(game.isGameOver());
-    }
-    @Test
-    void testComputeAvailableMoves() {
-        game.setBoard(BoardFixture.getTestBoard());
-        var moves = solver.computeAvailableMoves(game.getBoard());
-        assertEquals(3, moves.size());
+        assertTrue(Game.isGameOver(solver.getBoard()));
     }
 
     @Test
-    void testMakeMove() {
-        game.setBoard(BoardFixture.getTestBoard());
-        var moves = solver.computeAvailableMoves(game.getBoard());
-        solver.makeMove(moves.getFirst());
-        assertEquals("X", game.getCellAt(0, 0));
+    void testComputeNextMoves() {
+        Game.Cell[][] testBoard = BoardFixture.getTestBoard();
+        var moves = GameSolver.nextMoves(testBoard);
+        assertEquals(3, moves.size());
     }
 
     @Test
     void testPlayRandomUntilGameOver() {
         solver.playRandomUntilGameOver();
-        assertTrue(game.isGameOver());
+        assertTrue(Game.isGameOver(solver.getBoard()));
     }
 
 }

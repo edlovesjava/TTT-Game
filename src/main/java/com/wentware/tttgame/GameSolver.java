@@ -1,48 +1,47 @@
 package com.wentware.tttgame;
 
 import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Getter
+@Setter
 public abstract class GameSolver {
-    protected final Logger logger = LoggerFactory.getLogger(GameSolver.class);
-    private final Game game;
 
-    protected GameSolver(Game game) {
-        this.game = game;
+    Game.Cell[][] board;
+
+    GameSolver() {
+        board = Game.initBoard();
     }
 
-    public void makeMove(PossibleMove possibleMove) {
-        game.setCellAt(possibleMove.x(), possibleMove.y(), possibleMove.value());
+    GameSolver(Game.Cell[][] board) {
+        setBoard(board);
     }
 
+    public static List<Game.Cell[][]> nextMoves(Game.Cell[][] board) {
 
-    public List<PossibleMove> computeAvailableMoves(Game.Cell[][] board) {
-        List<PossibleMove> possibleMoves = new ArrayList<>();
+        List<Game.Cell[][]> possibleMoves = new ArrayList<>();
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
                 if (board[i][j].getValue().equals(" ")) {
-                    possibleMoves.add(new PossibleMove(i, j, getGame().whichTurn()));
+                    Game.Cell[][] newBoard = Game.copyBoard(board);
+                    newBoard[i][j].setValue(Game.whichTurn(newBoard));
+                    possibleMoves.add(newBoard);
                 }
             }
         }
         return possibleMoves;
     }
 
+
     public abstract void solve();
 
-    protected void printResult() {
-        if (getGame().isGameOver()) {
-            logger.info("Game is over {}", (Objects.equals(getGame().getWinner(), " ") ? " - tie" : " - " + getGame().getWinner() + " wins"));
+    protected void printResult(Game.Cell[][] board) {
+        if (Game.isGameOver(board)) {
+            System.out.println("Game is over " + (Objects.equals(Game.getWinner(board), " ") ? " - tie" : " - " + Game.getWinner(board) + " wins"));
         }
-    }
-
-    //create graph of all possible moves of the game
-        public record PossibleMove(int x, int y, String value) {
     }
 }

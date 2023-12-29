@@ -5,9 +5,12 @@ import java.util.Random;
 public class RandomGameSolver extends GameSolver {
 
     private final Random random = new Random();
+    RandomGameSolver() {
+        super();
+    }
 
-    public RandomGameSolver(Game game) {
-        super(game);
+    RandomGameSolver(Game.Cell[][] board) {
+        super(board);
     }
 
     @Override
@@ -17,15 +20,15 @@ public class RandomGameSolver extends GameSolver {
 
 
     public void playRandom() {
-        if (getGame().isGameOver()) {
+        if (Game.isGameOver(getBoard())) {
             return;
         }
         //try until we find an empty cell
         while(true) {
-            int x = random.nextInt(getGame().getBoardSize());
-            int y = random.nextInt(getGame().getBoardSize());
-            if (getGame().getCellAt(x, y).equals(" ")) {
-                getGame().setCellAt(x, y, getGame().whichTurn());
+            int x = random.nextInt(board.length);
+            int y = random.nextInt(board.length);
+            if (board[x][y].getValue().equals(" ")) {
+                board[x][y].setValue(Game.whichTurn(board));
                 break;
             }
         }
@@ -34,12 +37,12 @@ public class RandomGameSolver extends GameSolver {
 
     public void playRandomUntilGameOver() {
         var turn = 0;
-        while (!getGame().isGameOver()) {
-            logger.info("turn: {}", turn++);
+        while (!Game.isGameOver(board)) {
+            System.out.println("turn: " + turn++);
             playRandom();
 
         }
-        printResult();
+        printResult(board);
     }
 
 }

@@ -1,15 +1,22 @@
 package com.wentware.tttgame;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MinmaxGameSolverTest {
-    Game game;
     MinmaxGameSolver solver;
 
     @BeforeEach
     void setUp() {
-        game = new Game();
-        solver = new MinmaxGameSolver(game);
+        solver = new MinmaxGameSolver();
+    }
+
+    @Test
+    void testSolve() {
+        solver.solve();
+        assertTrue(Game.isGameOver(solver.getBoard()));
     }
 
 }

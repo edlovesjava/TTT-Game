@@ -17,10 +17,9 @@ public class Application implements CommandLineRunner {
     @Override
     public void run(String... args) {
         logger.info("STARTING APPLICATION, solving TTT Game");
-        Game game = new Game();
-        GameSolver solver = new RandomGameSolver(game);
+        GameSolver solver = new RandomGameSolver();
         solver.solve();
-        logger.info("\n{}",game.drawBoard());
+        logger.info("\n{}",Game.drawBoard(solver.getBoard()));
         logger.info("APPLICATION FINISHED");
 
     }
