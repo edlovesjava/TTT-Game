@@ -21,7 +21,7 @@ public class MinmaxGameSolver extends GameSolver {
         int turn = 1;
         while (!Game.isGameOver(currentBoard)) {
             boolean maximizingPlayer = Game.whichTurn(currentBoard).equals("X");
-            var result = minmax(currentBoard, 4, maximizingPlayer);
+            var result = minmax(currentBoard, 5, maximizingPlayer);
             currentBoard = result.value();
             System.out.println("Turn " + turn++);
             System.out.println(Game.drawBoard(currentBoard));

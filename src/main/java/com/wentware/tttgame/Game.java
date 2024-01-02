@@ -124,6 +124,11 @@ public class Game {
         return find2MatchingAndSpace(board, player, false);
     }
 
+    private static boolean hasTwoInAColumn(Cell[][] board, String player) {
+        //find a col with 2 X's or 2 O's and an empty cell
+        return find2MatchingAndSpace(board, player, true);
+    }
+
     public static boolean find2MatchingAndSpace(Game.Cell[][] board, String player, boolean rotation) {
         for (int i = 0; i < board.length; i++) {
             for(int emptyPos = 0; emptyPos < board.length; emptyPos++) { //emptyPos is the space
@@ -131,7 +136,7 @@ public class Game {
                 for(int j = 0; j < board.length; j++) {
                     String testValue = j == emptyPos ? " " : player;
                     //not a match
-                    if (!getBoardValue(board, rotation, i, j).equals(testValue)) {
+                    if (!getBoardValue(board, i, j, rotation).equals(testValue)) {
                         break; //not a match
                     }
                     found++;
@@ -144,7 +149,7 @@ public class Game {
         return false;
     }
 
-    private static String getBoardValue(Cell[][] board, boolean rotation, int i, int j) {
+    private static String getBoardValue(Cell[][] board, int i, int j, boolean rotation) {
         int row = i;
         int col = j;
         if (rotation) {
@@ -153,18 +158,13 @@ public class Game {
         return board[row][col].getValue();
     }
 
-    private static boolean hasTwoInAColumn(Cell[][] board, String player) {
-        //find a col with 2 X's or 2 O's and an empty cell
-        return find2MatchingAndSpace(board, player, true);
-    }
-
     private static boolean hasTwoInADiagonal(Cell[][] board, String player) {
         //find a diagonal with 2 X's or 2 O's and an empty cell
         //diagonal from top left to bottom right
-        for (int s = 0; s < board.length; s++) { //s is the space
+        for (int emptyPos = 0; emptyPos < board.length; emptyPos++) { //emptyPos is the space
             int found = 0;
             for (var i = 0; i < board.length; i++) {
-                String testValue = i == s ? " " : player;
+                String testValue = i == emptyPos ? " " : player;
                 if (!board[i][i].getValue().equals(testValue)) {
                     break; //not a match
                 }
@@ -176,10 +176,10 @@ public class Game {
         }
 
         //diagonal from top right to bottom left
-        for (int s = 0; s < board.length; s++) { //s is the space
+        for (int emptyPos = 0; emptyPos < board.length; emptyPos++) { //emptyPos is the space
             int found = 0;
             for (int i = 0; i < board.length; i++) {
-                String testValue = i == s ? " " : player;
+                String testValue = i == emptyPos ? " " : player;
                 if (!board[i][board.length - 1 - i].getValue().equals(testValue)) {
                     break; //not a match
                 }
